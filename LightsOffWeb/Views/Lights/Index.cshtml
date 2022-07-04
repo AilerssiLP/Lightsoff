@@ -1,0 +1,112 @@
+﻿@model LightsOffWeb.Models.LightsModel;
+
+<body style="background-color:lightblue;"> </body>
+
+<h1 style="color:darkGreen"><center><em><u><strong>Lights out</strong></u></em></center></h1>
+<p></p>
+
+<div id="text" style="color: black; border:darkGreen; border-width:5px; border-style:solid;">
+<h2 style="color: darkgreen; font-size: 20px">How to beat!</h2>
+<p><em>To beat the game y have to turn off all of the lights off. <br>
+Pressing a button will switch 5 buttons (clicked one and one on each side) <br>
+to their second stage.</em></p>
+</div>
+<p></p>
+
+<a href="/Lights" id = "new" style="font-size: 30px;"><center><u style="color:orange">New Game</u></center></a><br/>
+
+<center><p style="color:Red;font-size: 25px">Solved : @Model.Field.IsSolved()<br/></p></center>
+
+
+<table style="border:1px solid lightblue;margin-left:auto;margin-right:auto;">
+	<tr>
+		@if (Model.Field.IsSolved() == true)
+		{
+			<center><h1 style="color:darkgreen"  style="font-size: 50px;" ><u>YOU WIN PRESS TRY AGAIN TO PLAY AGAIN !</u></h1></center>
+		}
+	</tr>
+</table>
+
+
+<table style="border:1px solid lightblue;margin-left:auto;margin-right:auto;">
+	<tr>
+		@if (Model.Field.IsSolved() == true)
+		{
+			<center><a href="/Lights" style="font-size: 30px;color:green" >TRY AGAIN!</a><br/></center>
+		}
+	</tr>
+</table>
+
+<table style="border:1px solid lightblue;margin-left:auto;margin-right:auto;">
+	@for (var row=0; row < Model.Field.RowCount; row++)
+	{
+		<tr>
+			@for(var column =0; column< Model.Field.ColumnCount; column++)
+			{
+				var tile = Model.Field.GetTile(row, column);
+				if (tile == null)
+				{
+					<td/>
+				}
+				else
+				{
+					<td>
+						<a href="/Lights/Move?row=@(row)&column=@(column)">
+							<img src="/images/Lights/img@(tile.Value)2.png"/>
+						</a>
+					</td>
+				}
+			}
+
+		</tr>
+	}
+</table>
+
+<h2 style="color:red;">Ratings:</h2 >
+<ol >
+    @foreach (var rating in Model.Ratings)
+    {
+        <li style="color:green">@rating.Player @rating.PlayerRating</li>
+    }
+</ol>
+<p>★★★★☆</p>
+<form action="/Lights/SaveRating" method="post" style="color:green">
+    Name: <input type="text" name="Player"/><br/>
+    Rating: <input type="number" name="PlayerRating"/><br/>
+    <input type="submit"/><br />
+</form>
+<p></p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<p></p>
+
+<h2 style="color:red;">Scores:</h2 >
+<ol >
+    @foreach (var score in Model.Scores)
+    {
+        <li style="color:green">@score.Player @score.Points</li>
+    }
+</ol>
+
+<form action="/Lights/SaveScore" method="post" style="color:green">
+    Name: <input type="text" name="Player"/><br/>
+    Score: <input type="number" name="Points"/><br/>
+    <input type="submit"/><br />
+</form>
+<p></p>
+	
+
+
+<h2 style="color:red">Comments:</h2 >
+<ol >
+    @foreach (var comment in Model.Comments)
+    {
+        <li style="color:green">@comment.Player @comment.PlayerComment</li>
+    }
+</ol>
+<form action="/Lights/SaveComment" method="post" style="color:darkgreen">
+    Name: <input type="text" name="Player"/><br/>
+    Comment: <input type="text" name="PlayerComment"/><br/>
+    <input type="submit"/><br />
+</form>
